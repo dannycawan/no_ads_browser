@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.noads.browser"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -19,21 +19,19 @@ android {
 
     defaultConfig {
         applicationId = "com.noads.browser"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 21
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0.0"
     }
 
     buildTypes {
         release {
-            // Gunakan debug key sementara agar bisa build rilis
             signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
-
-    // ✅ HAPUS baris ini kalau ada
-    // ndkVersion = flutter.ndkVersion
 }
 
 flutter {
