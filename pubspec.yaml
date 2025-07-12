@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.4.0 <4.0.0"  # ✅ FIX: Turunkan batasan agar cocok dengan Dart 3.4.1 di GitHub Actions
+  sdk: ">=3.4.0 <4.0.0"  # ✅ Kompatibel dengan Dart 3.4.1
 
 dependencies:
   flutter:
@@ -15,7 +15,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^4.0.0   # ✅ Kompatibel dengan Dart 3.4.1
 
 flutter:
   uses-material-design: true
