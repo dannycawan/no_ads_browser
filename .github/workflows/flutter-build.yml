@@ -18,7 +18,8 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.6'   # ✅ FIXED untuk Dart 3.8.1
+          flutter-version: '3.22.6'
+          channel: 'master'   # ✅ Perbaikan agar bisa pakai Dart 3.8.1
 
       - name: Install dependencies
         run: flutter pub get
