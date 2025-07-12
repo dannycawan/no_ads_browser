@@ -5,17 +5,18 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.4.0 <4.0.0"  # ✅ Kompatibel dengan Dart 3.4.1
+  sdk: ">=3.4.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  google_mobile_ads: ^4.0.0   # ✅ Tambahkan untuk AdMob
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0   # ✅ Kompatibel dengan Dart 3.4.1
+  flutter_lints: ^4.0.0        # ✅ Tetap cocok untuk Dart 3.4.1
 
 flutter:
   uses-material-design: true
