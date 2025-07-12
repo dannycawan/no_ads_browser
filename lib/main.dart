@@ -1,13 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MobileAds.instance.initialize();
 
-  runApp(
-    const MaterialApp(
-      home: SplashScreen(), // Tambahkan ini
-      debugShowCheckedModeBanner: false,
-    ),
-  );
+  runApp(const MaterialApp(
+    home: SplashScreen(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
 class SplashScreen extends StatefulWidget {
@@ -38,6 +39,22 @@ class _SplashScreenState extends State<SplashScreen> {
           "Loading No Ads Browser...",
           style: TextStyle(fontSize: 18, color: Colors.green),
         ),
+      ),
+    );
+  }
+}
+
+class NoAdsBrowserApp extends StatelessWidget {
+  const NoAdsBrowserApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("No Ads Browser"),
+      ),
+      body: const Center(
+        child: Text("Berhasil Masuk ke Halaman Utama!"),
       ),
     );
   }
