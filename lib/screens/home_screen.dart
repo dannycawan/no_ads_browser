@@ -59,16 +59,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 24),
 
-            // ✅ Native Ad (optional)
+            // ✅ Native Ad
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: NativeAdWidget(),
+              child: NativeAdWidget(factoryId: 'listTile'),
             ),
 
             const Spacer(),
 
             // ✅ Banner Ad
-            const AdmobBanner(),
+            const AdmobBanner(
+                adUnitId: 'ca-app-pub-6721734106426198/5801979806'),
 
             const SizedBox(height: 8),
           ],
