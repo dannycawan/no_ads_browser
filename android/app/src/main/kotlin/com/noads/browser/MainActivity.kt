@@ -8,7 +8,7 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        // Registrasi NativeAdFactory dengan ID "listTile"
+        // Daftarkan native ad factory
         GoogleMobileAdsPlugin.registerNativeAdFactory(
             flutterEngine,
             "listTile",
@@ -17,7 +17,6 @@ class MainActivity : FlutterActivity() {
     }
 
     override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
-        // Unregister factory saat flutter engine dibersihkan
         GoogleMobileAdsPlugin.unregisterNativeAdFactory(flutterEngine, "listTile")
         super.cleanUpFlutterEngine(flutterEngine)
     }

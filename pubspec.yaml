@@ -1,6 +1,6 @@
 name: no_ads_browser
-description: "A new Flutter project."
-publish_to: 'none'
+description: A fast and minimal ad-blocking browser.
+publish_to: 'none' # Private project, not published to pub.dev
 
 version: 1.0.0+1
 
@@ -10,13 +10,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # UI
   cupertino_icons: ^1.0.8
-  google_mobile_ads: ^4.0.0   # ✅ Tambahkan untuk AdMob
+
+  # Ads
+  google_mobile_ads: ^4.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0        # ✅ Tetap cocok untuk Dart 3.4.1
+
+  # Linting & best practices
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
