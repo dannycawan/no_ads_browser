@@ -17,6 +17,15 @@ dependencies:
   # Ads
   google_mobile_ads: ^4.0.0
 
+  # Settings & preferences
+  shared_preferences: ^2.2.2
+
+  # External links
+  url_launcher: ^6.2.5
+
+  # WebView
+  webview_flutter: ^4.8.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
