@@ -4,7 +4,10 @@ import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // ✅ Inisialisasi Google AdMob
   await MobileAds.instance.initialize();
+
   runApp(const NoAdsBrowserApp());
 }
 
@@ -17,7 +20,8 @@ class NoAdsBrowserApp extends StatelessWidget {
       title: 'No Ads Browser',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        useMaterial3: true, // ✅ Lebih modern UI
+        colorSchemeSeed: Colors.green,
         scaffoldBackgroundColor: Colors.white,
       ),
       home: const HomeScreen(),

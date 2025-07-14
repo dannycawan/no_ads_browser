@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:no_ads_browser/screens/settings_screen.dart';
 import 'package:no_ads_browser/screens/webview_screen.dart';
 import 'package:no_ads_browser/widgets/native_ad_widget.dart';
@@ -15,6 +16,30 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _openLastUrlIfEnabled();
+  }
+
+  Future<void> _openLastUrlIfEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    final rememberLast = prefs.getBool('remember_last_url') ?? false;
+    if (rememberLast) {
+      final lastUrl = prefs.getString('last_url');
+      if (lastUrl != null && lastUrl.isNotEmpty) {
+        Future.delayed(Duration.zero, () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => WebViewScreen(initialUrl: lastUrl),
+            ),
+          );
+        });
+      }
+    }
+  }
 
   void _onSearch() {
     String input = _controller.text.trim();
@@ -89,7 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 8),
 
             // ✅ Banner Ad
-            const AdmobBanner(adUnitId: 'ca-app-pub-xxx/yyy'),
+            const AdmobBanner(
+                adUnitId: 'ca-app-pub-6721734106426198/5471737354'),
 
             const SizedBox(height: 8),
           ],

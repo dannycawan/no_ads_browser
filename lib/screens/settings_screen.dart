@@ -40,12 +40,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _clearWebViewCache() async {
-    final webviewController = WebViewController();
-    await webviewController.clearCache();
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Cache cleared successfully!')),
-    );
+    try {
+      final controller = WebViewController();
+      await controller.clearCache();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cache cleared successfully!')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to clear cache: $e')),
+      );
+    }
   }
 
   @override
@@ -59,16 +66,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           SwitchListTile(
             title: const Text('Enable AdBlock'),
+            subtitle: const Text('Block intrusive ads in websites'),
             value: _isAdblockEnabled,
             onChanged: _saveAdblock,
           ),
           SwitchListTile(
             title: const Text('Remember Last URL'),
+            subtitle: const Text('Open the last visited page automatically'),
             value: _rememberLastUrl,
             onChanged: _saveRememberUrl,
           ),
           ListTile(
             title: const Text('Clear WebView Cache'),
+            subtitle: const Text('Free up space and reload websites fresh'),
             trailing: const Icon(Icons.delete),
             onTap: _clearWebViewCache,
           ),

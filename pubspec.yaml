@@ -17,20 +17,20 @@ dependencies:
   # Ads
   google_mobile_ads: ^4.0.0
 
-  # Settings & preferences
+  # Preferences
   shared_preferences: ^2.2.2
 
-  # External links
+  # Open external URLs (for PayPal donation, etc)
   url_launcher: ^6.2.5
 
-  # WebView
+  # Webview (adblock support via JS injection)
   webview_flutter: ^4.8.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # Linting & best practices
+  # Static code analysis
   flutter_lints: ^4.0.0
 
 flutter:
