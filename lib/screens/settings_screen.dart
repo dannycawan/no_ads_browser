@@ -22,20 +22,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _isAdblockEnabled = prefs.getBool('adblock') ?? true;
-      _rememberLastUrl = prefs.getBool('remember_url') ?? false;
+      _isAdblockEnabled = prefs.getBool('adblock_enabled') ?? true;
+      _rememberLastUrl = prefs.getBool('remember_last_url') ?? false;
     });
   }
 
   Future<void> _saveAdblock(bool value) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('adblock', value);
+    await prefs.setBool('adblock_enabled', value);
     setState(() => _isAdblockEnabled = value);
   }
 
   Future<void> _saveRememberUrl(bool value) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('remember_url', value);
+    await prefs.setBool('remember_last_url', value);
     setState(() => _rememberLastUrl = value);
   }
 

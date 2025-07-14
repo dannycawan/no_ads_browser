@@ -17,7 +17,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   final String adBlockJsCode = '''
     const style = document.createElement('style');
-    style.innerHTML = `
+    style.innerHTML = \`
       iframe, ins, .adsbygoogle, .ad-container, .ad, .ads, .sponsor,
       [id^="ad"], [class^="ad-"], [class*="banner"], .adslot,
       [href*="doubleclick"], [href*="adservice"], [src*="googlesyndication"],
@@ -25,7 +25,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
         display: none !important;
         visibility: hidden !important;
       }
-    `;
+    \`;
     document.head.appendChild(style);
   ''';
 
@@ -44,13 +44,13 @@ class _WebViewScreenState extends State<WebViewScreen> {
             final prefs = await SharedPreferences.getInstance();
 
             final rememberLastUrl = prefs.getBool('remember_last_url') ?? false;
-            final isAdblock = prefs.getBool('adblock_enabled') ?? true;
+            final isAdblockEnabled = prefs.getBool('adblock_enabled') ?? true;
 
             if (rememberLastUrl) {
               await prefs.setString('last_url', url);
             }
 
-            if (isAdblock) {
+            if (isAdblockEnabled) {
               _controller.runJavaScript(adBlockJsCode);
             }
           },
@@ -61,39 +61,58 @@ class _WebViewScreenState extends State<WebViewScreen> {
     _urlController.text = widget.initialUrl;
   }
 
-  void _goToUrl() {
+  void _goToUrlOrSearch() {
     final input = _urlController.text.trim();
-    final url = input.startsWith('http') ? input : 'https://$input';
-    _controller.loadRequest(Uri.parse(url));
+    if (input.isEmpty) return;
+
+    final String finalUrl;
+    if (Uri.tryParse(input)?.hasAbsolutePath ?? false || input.contains('.')) {
+      finalUrl = input.startsWith('http') ? input : 'https://$input';
+    } else {
+      finalUrl =
+          'https://www.google.com/search?q=${Uri.encodeComponent(input)}';
+    }
+
+    _controller.loadRequest(Uri.parse(finalUrl));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 4,
-        toolbarHeight: 52,
-        backgroundColor: Colors.white,
-        elevation: 1,
-        title: TextField(
-          controller: _urlController,
-          textInputAction: TextInputAction.go,
-          onSubmitted: (_) => _goToUrl(),
-          decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-            hintText: 'Enter URL or search...',
+    return WillPopScope(
+      onWillPop: () async {
+        if (await _controller.canGoBack()) {
+          _controller.goBack();
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          titleSpacing: 4,
+          toolbarHeight: 52,
+          backgroundColor: Colors.white,
+          elevation: 1,
+          title: TextField(
+            controller: _urlController,
+            textInputAction: TextInputAction.go,
+            onSubmitted: (_) => _goToUrlOrSearch(),
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              hintText: 'Enter keyword or URL...',
+            ),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () => _controller.reload(),
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => _controller.reload(),
-          ),
-        ],
+        body: WebViewWidget(controller: _controller),
       ),
-      body: WebViewWidget(controller: _controller),
     );
   }
 }

@@ -20,9 +20,19 @@ class NoAdsBrowserApp extends StatelessWidget {
       title: 'No Ads Browser',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        useMaterial3: true, // ✅ Lebih modern UI
-        colorSchemeSeed: Colors.green,
-        scaffoldBackgroundColor: Colors.white,
+        useMaterial3: true, // ✅ UI modern (Material 3)
+        colorSchemeSeed: Colors.green, // ✅ Tema dominan hijau
+        scaffoldBackgroundColor: Colors.white, // ✅ Background bersih
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32),
+          ),
+        ),
       ),
       home: const HomeScreen(),
     );

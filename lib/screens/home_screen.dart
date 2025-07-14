@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:no_ads_browser/screens/settings_screen.dart';
 import 'package:no_ads_browser/screens/webview_screen.dart';
@@ -29,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (rememberLast) {
       final lastUrl = prefs.getString('last_url');
       if (lastUrl != null && lastUrl.isNotEmpty) {
-        Future.delayed(Duration.zero, () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -42,19 +41,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onSearch() {
-    String input = _controller.text.trim();
+    final input = _controller.text.trim();
     if (input.isEmpty) return;
 
     String url;
-    if (Uri.tryParse(input)?.hasAbsolutePath ?? false || input.contains(".")) {
-      url = input.startsWith("http") ? input : "https://$input";
+    if (Uri.tryParse(input)?.hasAbsolutePath ?? false || input.contains('.')) {
+      url = input.startsWith('http') ? input : 'https://$input';
     } else {
-      url = "https://www.google.com/search?q=${Uri.encodeComponent(input)}";
+      url = 'https://www.google.com/search?q=${Uri.encodeComponent(input)}';
     }
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => WebViewScreen(initialUrl: url)),
+      MaterialPageRoute(
+        builder: (_) => WebViewScreen(initialUrl: url),
+      ),
     );
   }
 
@@ -75,7 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -93,8 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(32),
                     borderSide: const BorderSide(color: Colors.grey),
                   ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 20,
+                  ),
                 ),
               ),
             ),
@@ -108,14 +110,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
             const Spacer(),
 
-            // ✅ Donation Text
+            // ✅ Text Donasi
             const DonationText(),
 
             const SizedBox(height: 8),
 
             // ✅ Banner Ad
             const AdmobBanner(
-                adUnitId: 'ca-app-pub-6721734106426198/5471737354'),
+              adUnitId: 'ca-app-pub-6721734106426198/5471737354',
+            ),
 
             const SizedBox(height: 8),
           ],

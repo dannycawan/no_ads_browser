@@ -11,26 +11,26 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # UI
+  # UI Components
   cupertino_icons: ^1.0.8
 
-  # Ads
+  # Google AdMob (Banner & Native Ads)
   google_mobile_ads: ^4.0.0
 
-  # Preferences
+  # Local preferences (AdBlock toggle, Remember URL)
   shared_preferences: ^2.2.2
 
-  # Open external URLs (for PayPal donation, etc)
+  # External link launcher (for PayPal)
   url_launcher: ^6.2.5
 
-  # Webview (adblock support via JS injection)
+  # WebView with JS support (for ad-block)
   webview_flutter: ^4.8.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # Static code analysis
+  # Linting & code best practices
   flutter_lints: ^4.0.0
 
 flutter:
