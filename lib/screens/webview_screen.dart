@@ -15,15 +15,19 @@ class _WebViewScreenState extends State<WebViewScreen> {
   late final WebViewController _controller;
   final TextEditingController _urlController = TextEditingController();
 
+  // ✅ Script AdBlock maksimum (tidak memblokir website)
   final String adBlockJsCode = '''
     const style = document.createElement('style');
     style.innerHTML = \`
-      iframe, ins, .adsbygoogle, .ad-container, .ad, .ads, .sponsor,
-      [id^="ad"], [class^="ad-"], [class*="banner"], .adslot,
-      [href*="doubleclick"], [href*="adservice"], [src*="googlesyndication"],
-      [src*="ads"], [id*="popup"], .popup-ad, .overlay-ad {
+      iframe, ins, .adsbygoogle, .ad, .ads, .sponsor, .sponsored, .overlay,
+      .popup-ad, .overlay-ad, .banner-ad, .banner, .adbox,
+      [id^="ad-"], [id*="ads"], [class^="ad-"], [class*="ads"],
+      [src*="doubleclick"], [src*="googlesyndication"], 
+      [src*="adservice"], [src*="banner"] {
         display: none !important;
         visibility: hidden !important;
+        height: 0px !important;
+        width: 0px !important;
       }
     \`;
     document.head.appendChild(style);
@@ -42,15 +46,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
           },
           onPageFinished: (url) async {
             final prefs = await SharedPreferences.getInstance();
+            final rememberLast = prefs.getBool('remember_last_url') ?? false;
+            final adblockEnabled = prefs.getBool('adblock_enabled') ?? true;
 
-            final rememberLastUrl = prefs.getBool('remember_last_url') ?? false;
-            final isAdblockEnabled = prefs.getBool('adblock_enabled') ?? true;
-
-            if (rememberLastUrl) {
+            if (rememberLast) {
               await prefs.setString('last_url', url);
             }
 
-            if (isAdblockEnabled) {
+            if (adblockEnabled) {
               _controller.runJavaScript(adBlockJsCode);
             }
           },
@@ -61,19 +64,20 @@ class _WebViewScreenState extends State<WebViewScreen> {
     _urlController.text = widget.initialUrl;
   }
 
+  // ✅ Fungsi pencarian atau buka URL langsung
   void _goToUrlOrSearch() {
     final input = _urlController.text.trim();
     if (input.isEmpty) return;
 
-    final String finalUrl;
+    final String targetUrl;
     if (Uri.tryParse(input)?.hasAbsolutePath ?? false || input.contains('.')) {
-      finalUrl = input.startsWith('http') ? input : 'https://$input';
+      targetUrl = input.startsWith('http') ? input : 'https://$input';
     } else {
-      finalUrl =
+      targetUrl =
           'https://www.google.com/search?q=${Uri.encodeComponent(input)}';
     }
 
-    _controller.loadRequest(Uri.parse(finalUrl));
+    _controller.loadRequest(Uri.parse(targetUrl));
   }
 
   @override
@@ -97,17 +101,18 @@ class _WebViewScreenState extends State<WebViewScreen> {
             textInputAction: TextInputAction.go,
             onSubmitted: (_) => _goToUrlOrSearch(),
             decoration: InputDecoration(
+              hintText: 'Enter keyword or URL...',
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-              hintText: 'Enter keyword or URL...',
             ),
           ),
           actions: [
             IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: () => _controller.reload(),
+              tooltip: "Refresh",
             ),
           ],
         ),
